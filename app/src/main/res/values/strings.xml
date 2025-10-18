@@ -5,4 +5,8 @@
     <string name="BtnStop_txt">Stop</string>
     <string name="BtnStart_txt">Start</string>
     <string name="textViewLocation_txt">Localização não Disponível</string>
+    <string name="BtnStartGNSS_txt">Start</string>
+    <string name="BtnStopGNSS_txt">Stop</string>
+    <string name="TextViewGNSS_txt">Dados de localização não disponíveis</string>
+    <string name="textViewLocationManager_txt">Sistema de satélites não disponível</string>
 </resources>
