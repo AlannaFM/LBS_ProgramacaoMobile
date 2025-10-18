@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AVN1</string>
+    <string name="BtnLocation_txt">Location</string>
+    <string name="BtnGNSS_txt">GNSS</string>
+    <string name="BtnStop_txt">Stop</string>
+    <string name="BtnStart_txt">Start</string>
+    <string name="textViewLocation_txt">Localização não Disponível</string>
+</resources>
