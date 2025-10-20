@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GNSSView">
+        <attr name="radius" format="integer"/>
+        <attr name="circle_color" format="color"/>
+        <attr name="satellite_color" format="color"/>
+        <attr name="text_color" format="color"/>
+        <attr name="line_width" format="float"/>
+        <attr name="exampleColor" format="color" />
+    </declare-styleable>
+</resources>
+
+
