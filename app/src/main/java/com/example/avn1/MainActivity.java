@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button btnLocation = findViewById(R.id.BtnLocation);
         Button btnGNSS = findViewById(R.id.BtnGNSS);
+        Button btnGNSSPlot = findViewById(R.id.btnGnssPlot);
         //Obtém informações contínuas do sistema de
         //satélites + localizações com o
         //LocationManager
@@ -36,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        btnGNSSPlot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(getApplicationContext(), GNSSPlotActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }

@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="6dp"
-        android:text="Button"
+        android:text="GNSSPlot"
         app:layout_constraintEnd_toEndOf="@+id/BtnLocation"
         app:layout_constraintTop_toBottomOf="@+id/BtnGNSS" />
 </androidx.constraintlayout.widget.ConstraintLayout>
