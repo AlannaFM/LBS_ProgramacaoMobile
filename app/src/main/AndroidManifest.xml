@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AVN1">
         <activity
+            android:name=".GNSSPlotActivity"
+            android:exported="false" />
+        <activity
             android:name=".GNSSActivity"
             android:exported="false" />
         <activity
