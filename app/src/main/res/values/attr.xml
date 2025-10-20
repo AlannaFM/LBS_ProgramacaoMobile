@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="GNSSView">
-        <attr name="radius" format="integer"/>
+        <!-- cor das linhas / esfera celeste -->
         <attr name="circle_color" format="color"/>
-        <attr name="satellite_color" format="color"/>
+        <!-- cor padrão para satélites usados no fix -->
+        <attr name="used_satellite_color" format="color"/>
+        <!-- cor padrão para satélites não usados -->
+        <attr name="unused_satellite_color" format="color"/>
+        <!-- cor do texto (IDs e contadores) -->
         <attr name="text_color" format="color"/>
-        <attr name="line_width" format="float"/>
-        <attr name="exampleColor" format="color" />
+        <!-- escala relativa do raio (float entre 0.0 e 1.0) -->
+        <attr name="radius_scale" format="float"/>
     </declare-styleable>
 </resources>
 
