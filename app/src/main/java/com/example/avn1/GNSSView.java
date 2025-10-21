@@ -27,7 +27,7 @@ public class GNSSView extends View {
     private static final String PREF_SHOW_GLONASS = "showGLONASS";
     private static final String PREF_SHOW_GALILEO = "showGALILEO";
     private static final String PREF_SHOW_BEIDOU = "showBEIDOU";
-    private static final String PREF_SHOW_UNUSED = "showUnused";
+    private static final String PREF_SHOW_naoUsado = "shownaoUsado";
 
     private GnssStatus gnssStatus = null; // satélites do sistema GNSS
     private int r;  // raio da esfera celeste (pixels)
@@ -37,8 +37,8 @@ public class GNSSView extends View {
 
     // Configuráveis via attrs / prefs
     private int circleColor = Color.BLUE;
-    private int usedSatelliteColor = Color.GREEN;
-    private int unusedSatelliteColor = Color.RED;
+    private int UsadoSatelliteColor = Color.GREEN;
+    private int naoUsadoSatelliteColor = Color.RED;
     private int textColor = Color.BLACK;
     private float radiusScale = 0.9f;
 
@@ -47,32 +47,32 @@ public class GNSSView extends View {
     private boolean showGLONASS = true;
     private boolean showGALILEO = true;
     private boolean showBEIDOU = true;
-    private boolean showUnused = true;
+    private boolean shownaoUsado = true;
 
     private SharedPreferences prefs;
 
     public GNSSView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initAttributes(context, attrs);
-        initPaints();
-        loadPreferences();
+        inicializarAtributos(context, attrs);
+        inicializarPaints();
+        carregarPreferencias();
         // possibilita clique para abrir diálogo
         setClickable(true);
     }
 
-    private void initAttributes(Context context, @Nullable AttributeSet attrs) {
+    private void inicializarAtributos(Context context, @Nullable AttributeSet attrs) {
         if (attrs != null) {
             TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.GNSSView);
             circleColor = ta.getColor(R.styleable.GNSSView_circle_color, circleColor);
-            usedSatelliteColor = ta.getColor(R.styleable.GNSSView_used_satellite_color, usedSatelliteColor);
-            unusedSatelliteColor = ta.getColor(R.styleable.GNSSView_unused_satellite_color, unusedSatelliteColor);
+            UsadoSatelliteColor = ta.getColor(R.styleable.GNSSView_Usado_cor_satelite, UsadoSatelliteColor);
+            naoUsadoSatelliteColor = ta.getColor(R.styleable.GNSSView_naoUsado_cor_satelite, naoUsadoSatelliteColor);
             textColor = ta.getColor(R.styleable.GNSSView_text_color, textColor);
             radiusScale = ta.getFloat(R.styleable.GNSSView_radius_scale, radiusScale);
             ta.recycle();
         }
     }
 
-    private void initPaints() {
+    private void inicializarPaints() {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(5);
@@ -83,13 +83,13 @@ public class GNSSView extends View {
         textPaint.setTextSize(30f);
     }
 
-    private void loadPreferences() {
+    private void carregarPreferencias() {
         prefs = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         showGPS = prefs.getBoolean(PREF_SHOW_GPS, true);
         showGLONASS = prefs.getBoolean(PREF_SHOW_GLONASS, true);
         showGALILEO = prefs.getBoolean(PREF_SHOW_GALILEO, true);
         showBEIDOU = prefs.getBoolean(PREF_SHOW_BEIDOU, true);
-        showUnused = prefs.getBoolean(PREF_SHOW_UNUSED, true);
+        shownaoUsado = prefs.getBoolean(PREF_SHOW_naoUsado, true);
     }
 
     private void savePreferences() {
@@ -99,7 +99,7 @@ public class GNSSView extends View {
                 .putBoolean(PREF_SHOW_GLONASS, showGLONASS)
                 .putBoolean(PREF_SHOW_GALILEO, showGALILEO)
                 .putBoolean(PREF_SHOW_BEIDOU, showBEIDOU)
-                .putBoolean(PREF_SHOW_UNUSED, showUnused)
+                .putBoolean(PREF_SHOW_naoUsado, shownaoUsado)
                 .apply();
     }
 
@@ -131,7 +131,7 @@ public class GNSSView extends View {
         GPS, GLONASS, GALILEO, BEIDOU, UNKNOWN
     }
 
-    private Constellation constellationFromType(int constellationType) {
+    private Constellation constelacaoPorTipo(int constellationType) {
         // GnssStatus const types: GnssStatus.CONSTELLATION_*
         switch (constellationType) {
             case GnssStatus.CONSTELLATION_GPS: return Constellation.GPS;
@@ -143,11 +143,11 @@ public class GNSSView extends View {
     }
 
     // forma simples para cada constelação: círculo, quadrado, triângulo, losango
-    private void drawSatelliteMarker(Canvas canvas, float cx, float cy, Constellation c, boolean used) {
+    private void desenharMarcadorSatelite(Canvas canvas, float cx, float cy, Constellation c, boolean Usado) {
         Paint markerPaint = new Paint();
         markerPaint.setAntiAlias(true);
         markerPaint.setStyle(Paint.Style.FILL);
-        markerPaint.setColor(used ? usedSatelliteColor : unusedSatelliteColor);
+        markerPaint.setColor(Usado ? UsadoSatelliteColor : naoUsadoSatelliteColor);
 
         final float size = 18f; // radius of marker
 
@@ -216,22 +216,22 @@ public class GNSSView extends View {
 
         // Contadores
         int count = gnssStatus.getSatelliteCount();
-        int usedCount = 0;
-        int visibleCount = 0;
+        int CountUsado = 0;
+        int CountVisiveis = 0;
 
         // desenha satélites
         for (int i = 0; i < count; i++) {
             try {
                 float az = gnssStatus.getAzimuthDegrees(i);    // 0 = norte, 90 = leste
                 float el = gnssStatus.getElevationDegrees(i);  // 0 = horizonte, 90 = zenit
-                boolean used = gnssStatus.usedInFix(i);
+                boolean Usado = gnssStatus.usedInFix(i); //retorna true se o satélite está sendo usado na solução atual do fix (posição GPS válida)
                 int constellationType;
                 Constellation c = Constellation.UNKNOWN;
 
                 // tenta obter o tipo de constelação (API moderna)
                 try {
                     constellationType = gnssStatus.getConstellationType(i);
-                    c = constellationFromType(constellationType);
+                    c = constelacaoPorTipo(constellationType);
                 } catch (Throwable t) {
                     // fallback: inferir por SVID (não ideal) — deixar UNKNOWN
                     c = Constellation.UNKNOWN;
@@ -254,7 +254,7 @@ public class GNSSView extends View {
                 // Caso 1: Nenhuma constelação marcada
                 if (!anyConstellationSelected) {
                     // Mostrar apenas os não usados, se o usuário marcar a opção
-                    if (showUnused && !used) {
+                    if (shownaoUsado && !Usado) {
                         // ok, mostra este satélite não usado
                     } else {
                         continue; // pular todos os outros
@@ -267,17 +267,17 @@ public class GNSSView extends View {
 
                     // Caso 3: Dentro das constelações selecionadas
                     // Se o usuário NÃO quer mostrar não usados e este não é usado -> pula
-                    if (!showUnused && !used) {
+                    if (!shownaoUsado && !Usado) {
                         continue;
                     }
-                    // Caso 4: Se showUnused = true, mostra todos (usados e não usados) dessa constelação
+                    // Caso 4: Se shownaoUsado = true, mostra todos (usados e não usados) dessa constelação
                 }
 
 
 
-                visibleCount++;
+                CountVisiveis++;
 
-                if (used) usedCount++;
+                if (Usado) CountUsado++;
 
                 // posição projetada: x,y em pixels (com topo = norte)
                 float x = (float) (r * Math.cos(Math.toRadians(el)) * Math.sin(Math.toRadians(az)));
@@ -287,12 +287,12 @@ public class GNSSView extends View {
                 float cy = computeYc(y);
 
                 // desenhar marcador (forma por constelação; cor depende de usado ou não)
-                drawSatelliteMarker(canvas, cx, cy, c, used);
+                desenharMarcadorSatelite(canvas, cx, cy, c, Usado);
 
                 // desenhar texto com ID e constelação pequena
                 textPaint.setColor(textColor);
                 textPaint.setTextSize(28f);
-                String label = gnssStatus.getSvid(i) + " " + shortNameForConstellation(c) + (used ? " *" : "");
+                String label = gnssStatus.getSvid(i) + " " + shortNameForConstellation(c) + (Usado ? " *" : "");
                 canvas.drawText(label, cx + 22, cy + 10, textPaint);
 
             } catch (Exception e) {
@@ -305,8 +305,8 @@ public class GNSSView extends View {
         textPaint.setColor(textColor);
         textPaint.setTextSize(36f);
         int yBase = 45;
-        canvas.drawText("Visíveis: " + visibleCount, 20, yBase, textPaint);
-        canvas.drawText("Em uso (FIX): " + usedCount, 20, yBase + 40, textPaint);
+        canvas.drawText("Visíveis: " + CountVisiveis, 20, yBase, textPaint);
+        canvas.drawText("Em uso (FIX): " + CountUsado, 20, yBase + 40, textPaint);
     }
 
     private String shortNameForConstellation(Constellation c) {
@@ -323,13 +323,13 @@ public class GNSSView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            showConfigurationDialog();
+            mostrarDialogoConfiguracao();
             return true;
         }
         return super.onTouchEvent(event);
     }
 
-    private void showConfigurationDialog() {
+    private void mostrarDialogoConfiguracao() {
         // criar uma view simples com CheckBoxes programaticamente
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -349,15 +349,15 @@ public class GNSSView extends View {
         cbBEIDOU.setText("Mostrar BEIDOU");
         cbBEIDOU.setChecked(showBEIDOU);
 
-        final CheckBox cbShowUnused = new CheckBox(getContext());
-        cbShowUnused.setText("Mostrar satélites NÃO usados no FIX");
-        cbShowUnused.setChecked(showUnused);
+        final CheckBox cbShownaoUsado = new CheckBox(getContext());
+        cbShownaoUsado.setText("Mostrar satélites NÃO usados no FIX");
+        cbShownaoUsado.setChecked(shownaoUsado);
 
         layout.addView(cbGPS);
         layout.addView(cbGLONASS);
         layout.addView(cbGALILEO);
         layout.addView(cbBEIDOU);
-        layout.addView(cbShowUnused);
+        layout.addView(cbShownaoUsado);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Configurar visualização");
@@ -371,7 +371,7 @@ public class GNSSView extends View {
                 showGLONASS = cbGLONASS.isChecked();
                 showGALILEO = cbGALILEO.isChecked();
                 showBEIDOU = cbBEIDOU.isChecked();
-                showUnused = cbShowUnused.isChecked();
+                shownaoUsado = cbShownaoUsado.isChecked();
 
                 savePreferences();
                 invalidate(); // redesenhar com nova configuração

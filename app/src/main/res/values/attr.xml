@@ -4,9 +4,9 @@
         <!-- cor das linhas / esfera celeste -->
         <attr name="circle_color" format="color"/>
         <!-- cor padrão para satélites usados no fix -->
-        <attr name="used_satellite_color" format="color"/>
+        <attr name="Usado_cor_satelite" format="color"/>
         <!-- cor padrão para satélites não usados -->
-        <attr name="unused_satellite_color" format="color"/>
+        <attr name="naoUsado_cor_satelite" format="color"/>
         <!-- cor do texto (IDs e contadores) -->
         <attr name="text_color" format="color"/>
         <!-- escala relativa do raio (float entre 0.0 e 1.0) -->
