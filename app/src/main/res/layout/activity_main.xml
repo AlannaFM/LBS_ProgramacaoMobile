@@ -8,32 +8,36 @@
     tools:context=".LocationActivity">
 
     <Button
-        android:id="@+id/BtnLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="244dp"
-        android:text="@string/BtnLocation_txt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/BtnGNSS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/BtnGNSS_txt"
+        app:layout_constraintBottom_toTopOf="@+id/btnGnssPlot"
         app:layout_constraintStart_toStartOf="@+id/BtnLocation"
         app:layout_constraintTop_toBottomOf="@+id/BtnLocation" />
+
+    <Button
+        android:id="@+id/BtnLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="9dp"
+        android:text="@string/BtnLocation_txt"
+        app:layout_constraintBottom_toTopOf="@+id/BtnGNSS"
+        app:layout_constraintEnd_toEndOf="@+id/btnGnssPlot"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
         android:id="@+id/btnGnssPlot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="22dp"
         android:text="GNSSPlot"
-        app:layout_constraintEnd_toEndOf="@+id/BtnLocation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BtnGNSS" />
 </androidx.constraintlayout.widget.ConstraintLayout>
