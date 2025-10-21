@@ -103,7 +103,8 @@ public class GNSSPlotActivity extends AppCompatActivity {
             try {
                 locationManager.unregisterGnssStatusCallback(gnssCallback);
             } catch (Exception e) {
-                e.printStackTrace(); // evita crash se já tiver sido desregistrado
+                e.printStackTrace(); //Ferramenta de depuração para mostrar qual tipo de exceção
+                // evita crash se já tiver sido desregistrado
             }
         }
         // desliga o location listener
