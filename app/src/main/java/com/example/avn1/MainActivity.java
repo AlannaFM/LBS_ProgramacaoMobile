@@ -17,12 +17,13 @@ public class MainActivity extends AppCompatActivity {
         Button btnLocation = findViewById(R.id.BtnLocation);
         Button btnGNSS = findViewById(R.id.BtnGNSS);
         Button btnGNSSPlot = findViewById(R.id.btnGnssPlot);
+
         //Obtém informações contínuas do sistema de
         //satélites + localizações com o
         //LocationManager
-
         btnLocation.setOnClickListener(new View.OnClickListener() {
         //localizações contínuas com o FusedLocationProviderCLient
+        //mostra as informações básicas de localização (latitude, longitude, altitude e precisão).
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(getApplicationContext(),LocationActivity.class);
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnGNSS.setOnClickListener(new View.OnClickListener() {
+            //dados detalhados do sistema GNSS em tempo real (número de satélites, status, constelações e sinal)
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(getApplicationContext(),GNSSActivity.class);
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         btnGNSSPlot.setOnClickListener(new View.OnClickListener() {
+            //tela que desenha a projeção da esfera celeste com os satélites visíveis, indicando os usados e não usados no FIX
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(getApplicationContext(), GNSSPlotActivity.class);
