@@ -18,11 +18,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnGNSS = findViewById(R.id.BtnGNSS);
         Button btnGNSSPlot = findViewById(R.id.btnGnssPlot);
 
-        //Obtém informações contínuas do sistema de
-        //satélites + localizações com o
-        //LocationManager
         btnLocation.setOnClickListener(new View.OnClickListener() {
-        //localizações contínuas com o FusedLocationProviderCLient
+        //localizações contínuas com o FusedLocationProviderCllient
         //mostra as informações básicas de localização (latitude, longitude, altitude e precisão).
             @Override
             public void onClick(View v) {

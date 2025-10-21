@@ -22,7 +22,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 
 public class LocationActivity extends AppCompatActivity {
-    // Request code para o gerenciamento de permissões
+
+
+    //request code (código de requisição) para identificar qual permissão de localizaçao está sendo
+    // solicitada quando a resposta do usuário volta no método onRequestPermissionsResult().
     private static final int REQUEST_LOCATION_UPDATES=1;
     // Objetos da API de Localização
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -37,12 +40,14 @@ public class LocationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_location);
         Button btnStart=findViewById(R.id.BtnStart);
         Button btnStop=findViewById(R.id.BtnStop);
+
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startLocationUpdate();
             }
         });
+
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
