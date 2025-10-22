@@ -149,43 +149,43 @@ public class GNSSView extends View {
 
     // forma simples para cada constelação: círculo, quadrado, triângulo, losango
     private void desenharMarcadorSatelite(Canvas canvas, float xc, float yc, Constellation c, boolean Usado) {
-        Paint markerPaint = new Paint();
-        markerPaint.setAntiAlias(true);
-        markerPaint.setStyle(Paint.Style.FILL);
-        markerPaint.setColor(Usado ? CorSateliteUsado : CorSateliteNaoUsado);
+        Paint marcadorPaint = new Paint(); //pincel para desenhar cada satelite
+        marcadorPaint.setAntiAlias(true);
+        marcadorPaint.setStyle(Paint.Style.FILL);
+        marcadorPaint.setColor(Usado ? CorSateliteUsado : CorSateliteNaoUsado);
 
         final float size = 18f; // radius of marker
 
         switch (c) {
             case GPS:
                 // círculo
-                canvas.drawCircle(xc, yc, size, markerPaint);
+                canvas.drawCircle(xc, yc, size, marcadorPaint);
                 break;
             case GLONASS:
                 // quadrado
-                canvas.drawRect(xc - size, yc - size, xc + size, yc + size, markerPaint);
+                canvas.drawRect(xc - size, yc - size, xc + size, yc + size, marcadorPaint);
                 break;
             case GALILEO:
                 // triângulo
                 Path p = new Path();
-                p.moveTo(xc, yc - size);
-                p.lineTo(xc - size, yc + size);
-                p.lineTo(xc + size, yc + size);
+                p.moveTo(xc, yc - size); //topo
+                p.lineTo(xc - size, yc + size); //base esquerda
+                p.lineTo(xc + size, yc + size); //base direita
                 p.close();
-                canvas.drawPath(p, markerPaint);
+                canvas.drawPath(p, marcadorPaint);
                 break;
             case BEIDOU:
                 // losango
                 Path d = new Path();
-                d.moveTo(xc, yc - size);
-                d.lineTo(xc - size, yc);
-                d.lineTo(xc, yc + size);
-                d.lineTo(xc + size, yc);
+                d.moveTo(xc, yc - size); //topo
+                d.lineTo(xc - size, yc); //esquerda
+                d.lineTo(xc, yc + size); //parte de baixo
+                d.lineTo(xc + size, yc); //direita
                 d.close();
-                canvas.drawPath(d, markerPaint);
+                canvas.drawPath(d, marcadorPaint);
                 break;
             default:
-                canvas.drawCircle(xc, yc, size, markerPaint);
+                canvas.drawCircle(xc, yc, size, marcadorPaint);
         }
     }
 
@@ -334,15 +334,17 @@ public class GNSSView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
             MostrarDialogoConfiguracao();
-            return true;
+            return true; //evento consumido
         }
         return super.onTouchEvent(event);
     }
 
     private void MostrarDialogoConfiguracao() {
-        // criar uma view simples com CheckBoxes programaticamente
+        // cria o layout vertical
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
+
+        //cria as checkboxes
         final CheckBox cbGPS = new CheckBox(getContext());
         cbGPS.setText("MOSTRAR GPS");
         cbGPS.setChecked(MOSTRARGPS);
@@ -363,15 +365,18 @@ public class GNSSView extends View {
         cbMOSTRARnaoUsado.setText("MOSTRAR satélites NÃO usados no FIX");
         cbMOSTRARnaoUsado.setChecked(MOSTRARnaoUsado);
 
+        //adiciona ao layout
         layout.addView(cbGPS);
         layout.addView(cbGLONASS);
         layout.addView(cbGALILEO);
         layout.addView(cbBEIDOU);
         layout.addView(cbMOSTRARnaoUsado);
 
+        //Cria ddiálogo
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Configurar visualização");
         builder.setView(layout);
+        //botao ok
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -383,11 +388,13 @@ public class GNSSView extends View {
                 MOSTRARBEIDOU = cbBEIDOU.isChecked();
                 MOSTRARnaoUsado = cbMOSTRARnaoUsado.isChecked();
 
-                savePreferences();
+                savePreferences(); //persiste no dispositivo
                 invalidate(); // redesenhar com nova configuração
             }
         });
+        //botao cancelar
         builder.setNegativeButton("Cancelar", null);
+        //exibe o diálogo
         builder.show();
     }
 }
